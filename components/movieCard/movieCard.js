@@ -33,13 +33,19 @@ class MovieCard extends HTMLElement{
         this.shadowRoot.appendChild(template.content.cloneNode(true));
         //şimdi üst sınıflardan çağrılan attribute'leri okuyup template'de yazdıralım
 
+        //template - component arasındaki gecikmeyi önlemek için time ayarladık.
         setTimeout(() =>{
             this.shadowRoot.querySelector("h3").innerHTML = this.getAttribute("title");
             this.shadowRoot.querySelector("img").src = this.getAttribute("poster");
+            this.shadowRoot.querySelector(".button")
+                .setAttribute("href" , `https://www.imdb.com/title/${this.getAttribute("IMDB")}/` );
+
+
             if (this.getAttribute("isFavorite")=="true"){
 
                 this.shadowRoot.querySelector(".isFavourite").classList.add("is_favourite")
             }
+
             },100)
 
 

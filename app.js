@@ -23,6 +23,38 @@ let movies = [
         isFavourite: true
     }
 ];
+const apiKey = "9c48e0e0";
+const siteUrl ="http://www.omdbapi.com/?apikey=9c48e0e0&s=";
+//arama filtresi
+const search_text = document.querySelector(".search_text");
+
+search_text.addEventListener("keydown" , e => {
+
+
+   if (e.keyCode == 13) {
+       searchMovie();
+   }
+})
+
+
+//film çekmek için api kullanalım
+async function  searchMovie() {
+ const request =  await fetch(`${siteUrl}${search_text.value}`);
+ const data = await request.json();
+ //çekdiğimiz datayı custom bir nesneye map'ledik.
+ let moviess = data.Search.map(m=> {
+     return {
+         title:m.Title ,
+         description : `${m.Year}/${m.Type}`,
+         IMDB : m.imdbID,
+         poster:m.Poster,
+         isFavourite:false
+     }
+ });
+ console.log(moviess);
+    prepareMovies(moviess);
+
+}
 
 
 //movie card üretecek olan fonksiyon. Önemli !
@@ -30,7 +62,7 @@ let movies = [
 function prepareMovies(movies) {
     //dataları servistek çekmiş gibi düşünelim.
 
-
+    document.querySelector("#movies").innerHTML='';
     // let moviecard = document.createElement("movie-card");
     // document.querySelector("#movies").append(moviecard);
     movies.forEach(x=> {
@@ -51,6 +83,7 @@ function prepareMovies(movies) {
         moviecard.setAttribute("title" , x.title);
         moviecard.setAttribute("poster" , x.poster);
         moviecard.setAttribute("isFavorite" , x.isFavourite);
+        moviecard.setAttribute("IMDB" , x.IMDB),
         moviecard.innerHTML = x.description;
 
         document.querySelector("#movies").append(moviecard);
@@ -58,5 +91,3 @@ function prepareMovies(movies) {
     })
 
 }
-
-prepareMovies(movies);
